@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
@@ -8,8 +9,11 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 
+const showPassword = ref(false);
+const showConfirmPassword = ref(false);
+
 const form = useForm({
-    name: '',
+    role: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -33,17 +37,22 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Name" />
-                <TextInput
-                    id="name"
-                    v-model="form.name"
-                    type="text"
-                    class="mt-1 block w-full"
+                <InputLabel for="role" value="Role" />
+                <select
+                    id="role"
+                    v-model="form.role"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                     required
                     autofocus
-                    autocomplete="name"
-                />
-                <InputError class="mt-2" :message="form.errors.name" />
+                >
+                    <option value="" disabled>Select a role</option>
+                    <option value="Buyer">Buyer</option>
+                    <option value="Seller">Seller</option>
+                    <option value="Buyer and Seller">Buyer and Seller</option>
+                    <option value="Agent">Agent</option>
+                    <option value="All Around">All Around</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.role" />
             </div>
 
             <div class="mt-4">
@@ -59,29 +68,45 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div class="mt-4">
+            <!-- Password -->
+            <div class="mt-4 relative">
                 <InputLabel for="password" value="Password" />
                 <TextInput
                     id="password"
                     v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
+                    :type="showPassword ? 'text' : 'password'"
+                    class="mt-1 block w-full pr-20"
                     required
                     autocomplete="new-password"
                 />
+                <button
+                    type="button"
+                    class="absolute top-9 right-2 text-sm text-gray-600 hover:text-gray-900 focus:outline-none"
+                    @click="showPassword = !showPassword"
+                >
+                    {{ showPassword ? 'Hide' : 'Show' }}
+                </button>
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
-            <div class="mt-4">
+            <!-- Confirm Password -->
+            <div class="mt-4 relative">
                 <InputLabel for="password_confirmation" value="Confirm Password" />
                 <TextInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
+                    :type="showConfirmPassword ? 'text' : 'password'"
+                    class="mt-1 block w-full pr-20"
                     required
                     autocomplete="new-password"
                 />
+                <button
+                    type="button"
+                    class="absolute top-9 right-2 text-sm text-gray-600 hover:text-gray-900 focus:outline-none"
+                    @click="showConfirmPassword = !showConfirmPassword"
+                >
+                    {{ showConfirmPassword ? 'Hide' : 'Show' }}
+                </button>
                 <InputError class="mt-2" :message="form.errors.password_confirmation" />
             </div>
 
@@ -89,9 +114,11 @@ const submit = () => {
                 <InputLabel for="terms">
                     <div class="flex items-center">
                         <Checkbox id="terms" v-model:checked="form.terms" name="terms" required />
-
                         <div class="ms-2">
-                            I agree to the <a target="_blank" :href="route('terms.show')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Terms of Service</a> and <a target="_blank" :href="route('policy.show')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Privacy Policy</a>
+                            I agree to the
+                            <a target="_blank" :href="route('terms.show')" class="underline text-sm text-gray-600 hover:text-gray-900">Terms of Service</a>
+                            and
+                            <a target="_blank" :href="route('policy.show')" class="underline text-sm text-gray-600 hover:text-gray-900">Privacy Policy</a>
                         </div>
                     </div>
                     <InputError class="mt-2" :message="form.errors.terms" />
@@ -99,7 +126,7 @@ const submit = () => {
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
                     Already registered?
                 </Link>
 

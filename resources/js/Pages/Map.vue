@@ -38,7 +38,7 @@ onMounted(() => {
           <select name="" id="" style="border: 1px solid lightgray;">
             <option value="Legazpi City">Legazpi City</option>
             <option value="Tabaco City">Tabaco City</option>
-            <option value="Ligao Ligao">Legazpi City</option>
+            <option value="Ligao City">Ligao City</option>
           </select>
         </template>
       </div>

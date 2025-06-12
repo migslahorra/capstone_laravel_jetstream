@@ -25,6 +25,28 @@ const switchToTeam = (team) => {
 const logout = () => {
     router.post(route('logout'));
 };
+
+let timeout = 5000; // 5 seconds
+let logoutTimer;
+
+function startInactivityTimer() {
+    clearTimeout(logoutTimer);
+    logoutTimer = setTimeout(() => {
+    router.post(route('logout'), {}, {
+        onSuccess: () => {
+            window.location.href = route('login');
+        }
+    });
+}, timeout);
+}
+
+// Reset timer on user interaction
+['mousemove', 'keydown', 'click'].forEach(event => {
+    document.addEventListener(event, startInactivityTimer);
+});
+
+// Start the timer initially
+startInactivityTimer();
 </script>
 
 <template>
@@ -49,7 +71,7 @@ const logout = () => {
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    <i class="fa-solid fa-dashboard" style="margin-right: 5px;"></i>LandSeek Dashboard
+                                    <i class="fa-solid fa-dashboard" style="margin-right: 5px;"></i>Dashboard
                                 </NavLink>
 
                                 <NavLink :href="route('properties')" :active="route().current('properties')">
