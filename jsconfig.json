@@ -1,9 +1,16 @@
 {
-    "compilerOptions": {
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["resources/js/*"]
-        }
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["resources/js/*"]
     },
-    "exclude": ["node_modules", "public"]
+    "jsx": "preserve",
+    "allowJs": true,
+    "checkJs": false
+  },
+  "exclude": ["node_modules", "public"],
+  "include": ["resources/js/**/*", "resources/**/*.vue"]
 }

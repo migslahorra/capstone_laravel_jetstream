@@ -9,24 +9,19 @@ use Illuminate\Support\Facades\Auth;
 class PropertyController extends Controller
 {   
     public function index()
-{
-    $properties = Property::all(); // or paginate() if needed
+    {
+        $properties = Property::all();
 
-    return inertia('Properties', [
-        'properties' => $properties,
-    ]);
-}
-    /**
-     * Show the form for creating a new property.
-     */
+        return inertia('Properties', [
+            'properties' => $properties,
+        ]);
+    }
+
     public function create()
     {
         return inertia('Upload');
     }
 
-    /**
-     * Store a newly created property in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -50,20 +45,17 @@ class PropertyController extends Controller
 
         $user = Auth::user();
 
-        // Abort if not authenticated or not a seller
         if (!$user || $user->role !== 'Seller') {
             abort(403, 'Only sellers can upload properties.');
         }
 
         $imagePaths = [];
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('property_images', 'public');
-                $imagePaths[] = $path;
-            }
+        foreach ($request->file('images') as $image) {
+            $path = $image->store('property_images', 'public');
+            $imagePaths[] = $path;
         }
 
-        $property = Property::create([
+        Property::create([
             'user_id' => $user->id,
             'title' => $validated['title'],
             'description' => $validated['description'],
@@ -82,21 +74,21 @@ class PropertyController extends Controller
             'images' => json_encode($imagePaths)
         ]);
 
-        return redirect()->route('properties')
-            ->with('success', 'Property created successfully!');
-
+        return redirect()->route('properties')->with('success', 'Property created successfully!');
     }
 
-    /**
-     * Display the specified property.
-     */
     public function show(Property $property)
     {
-        return inertia('Properties/Show', [
+        return inertia('Show', [
             'property' => $property,
             'images' => json_decode($property->images, true)
         ]);
     }
 
-    // Additional methods (index, update, destroy, etc.) can be added as needed
+    public function map()
+    {
+        return response()->json(
+            Property::select('id', 'title', 'address', 'latitude', 'longitude')->get()
+        );
+    }
 }

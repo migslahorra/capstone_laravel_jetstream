@@ -20,6 +20,8 @@ class FortifyServiceProvider extends ServiceProvider
         //
     }
 
+    // This is the method of ther fortify service provider for creating, updating,
+    // and resetting user, user information and password.
     public function boot(): void
     {
         Fortify::createUsersUsing(CreateNewUser::class);

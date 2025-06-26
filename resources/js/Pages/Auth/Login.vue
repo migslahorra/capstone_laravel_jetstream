@@ -14,6 +14,7 @@ defineProps({
     status: String,
 });
 
+// This is the form of the frontend used for reactive forms and handling/errors
 const form = useForm({
     email: '',
     password: '',
@@ -44,6 +45,8 @@ const submit = () => {
             {{ status }}
         </div>
 
+        <!-- Metod -->
+        <!-- This secures and validate the required input for email (since it is set by email)-->
         <form @submit.prevent="submit">
             <div>
                 <InputLabel for="email" value="Email" />

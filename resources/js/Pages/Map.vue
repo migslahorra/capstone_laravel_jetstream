@@ -1,25 +1,36 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
-onMounted(() => {
-  // This is to make sure the leaflet javascript is loaded (window.L should exist)
+const properties = ref([]);
+
+onMounted(async () => {
+  // Fetch map data from Laravel endpoint
+  const res = await fetch('/map-data');
+  const data = await res.json();
+  properties.value = data;
+
   if (typeof window.L !== 'undefined') {
-    // This initializes the map and set its view to Legazpi City
     const map = window.L.map('map').setView([13.1391, 123.7438], 13);
 
-    // This is to add openStreetMap tiles as the base map layer
     window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
 
-    // This adds a marker at the center point (Legazpi City)
     const marker = window.L.marker([13.1391, 123.7438]).addTo(map);
+    marker.bindPopup('<b>Legazpi City</b><br>You are currently viewing <br> in the city of Legazpi.').openPopup();
 
-    // This binds up a popup to the marker
-    marker.bindPopup('<b>Hello world!</b><br>This is a Leaflet map.').openPopup();
+    // Dynamically add markers for each property
+    properties.value.forEach((property) => {
+      if (property.latitude && property.longitude) {
+        const propertyMarker = window.L.marker([property.latitude, property.longitude]).addTo(map);
+        propertyMarker.bindPopup(
+          `<strong>${property.title}</strong><br>${property.address}<br><a href="/properties/${property.id}">View Details</a>`
+        );
+      }
+    });
   } else {
     console.error('Leaflet library not loaded!');
   }
@@ -44,10 +55,6 @@ onMounted(() => {
       </div>
     </template>
 
-      <div id="map" style="height: 400px; width: 700px; margin: 2.5%; border: 2px solid lightgrey; border-radius: 5px;"></div>  
-
-    <footer style="font-size: small; position: fixed; bottom: 0; text-align: center; width: 100%; margin-bottom: 15px;">
-        <p>&copy; 2025 LandSeek. All Rights Reserved.</p>
-    </footer>
+    <div id="map" style="height: 400px; width: 700px; margin-top: 2.5%; margin-left: 23%; border: 2px solid lightgrey; border-radius: 5px;"></div>  
   </AppLayout>
 </template>

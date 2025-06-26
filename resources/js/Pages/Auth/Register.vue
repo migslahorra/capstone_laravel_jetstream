@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
@@ -11,6 +11,7 @@ import TextInput from '@/Components/TextInput.vue';
 
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
+const passwordStrength = ref('');
 
 const form = useForm({
     role: '',
@@ -18,6 +19,30 @@ const form = useForm({
     password: '',
     password_confirmation: '',
     terms: false,
+});
+
+// Method 
+// Password strength logic
+// This determines and measures the strength of the password input 
+watch(() => form.password, (value) => {
+    if (!value) {
+        passwordStrength.value = '';
+    } else if (value.length < 6) {
+        passwordStrength.value = 'Weak';
+    } else if (value.match(/[A-Z]/) && value.match(/[0-9]/) && value.match(/[^A-Za-z0-9]/)) {
+        passwordStrength.value = 'Strong';
+    } else {
+        passwordStrength.value = 'Medium';
+    }
+});
+
+const strengthColor = computed(() => {
+    switch (passwordStrength.value) {
+        case 'Weak': return 'bg-red-500';
+        case 'Medium': return 'bg-yellow-500';
+        case 'Strong': return 'bg-green-500';
+        default: return 'bg-gray-300';
+    }
 });
 
 const submit = () => {
@@ -41,7 +66,7 @@ const submit = () => {
                 <select
                     id="role"
                     v-model="form.role"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200"
                     required
                     autofocus
                 >
@@ -68,7 +93,7 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <!-- Password -->
+            <!-- This is the password field input with strength meter -->
             <div class="mt-4 relative">
                 <InputLabel for="password" value="Password" />
                 <TextInput
@@ -81,12 +106,17 @@ const submit = () => {
                 />
                 <button
                     type="button"
-                    class="absolute top-9 right-2 text-sm text-gray-600 hover:text-gray-900 focus:outline-none"
+                    class="absolute top-9 right-2 text-sm text-gray-600 hover:text-gray-900"
                     @click="showPassword = !showPassword"
                 >
                     {{ showPassword ? 'Hide' : 'Show' }}
                 </button>
                 <InputError class="mt-2" :message="form.errors.password" />
+
+                <div v-if="form.password" class="mt-2">
+                    <div class="h-2 rounded-full" :class="[strengthColor, 'transition-all']"></div>
+                    <p class="text-sm mt-1 text-gray-600">Strength: <strong>{{ passwordStrength }}</strong></p>
+                </div>
             </div>
 
             <!-- Confirm Password -->
@@ -102,7 +132,7 @@ const submit = () => {
                 />
                 <button
                     type="button"
-                    class="absolute top-9 right-2 text-sm text-gray-600 hover:text-gray-900 focus:outline-none"
+                    class="absolute top-9 right-2 text-sm text-gray-600 hover:text-gray-900"
                     @click="showConfirmPassword = !showConfirmPassword"
                 >
                     {{ showConfirmPassword ? 'Hide' : 'Show' }}

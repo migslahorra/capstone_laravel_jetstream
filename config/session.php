@@ -48,6 +48,7 @@ return [
     */
 
     'encrypt' => env('SESSION_ENCRYPT', false),
+    // if turned one, all of the sessions in a browser will be enrcypted
 
     /*
     |--------------------------------------------------------------------------

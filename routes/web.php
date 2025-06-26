@@ -1,11 +1,12 @@
 <?php
 
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\MessagesController;
+use App\Http\Controllers\InquiryController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-// This is the main route for the application that renders the welcome page
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -15,55 +16,45 @@ Route::get('/', function () {
     ]);
 });
 
-// Group all verified and authenticated routes together
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    // This is the route for dashboard that are for verified and authenticated users only
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard'); 
 
-    // This route is for properties that are for verified and authenticated users only
+    // Dashboard
+    Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
+
+    // Properties
     Route::get('/properties', [PropertyController::class, 'index'])->name('properties');
     Route::post('/properties', [PropertyController::class, 'store'])->name('properties.store');
+    Route::get('/properties/{property}', [PropertyController::class, 'show'])->name('properties.show');
 
-    // This is for the saved properties route that is for verified and authenticated users only
-    Route::get('/saved', function () {
-        return Inertia::render('Saved');
-    })->name('saved');
+    // Saved Properties
+    Route::get('/saved', fn() => Inertia::render('Saved'))->name('saved');
 
-    // This route is for the map that are for verified and authenticated users only
-    Route::get('/map', function () {
-        return Inertia::render('Map');
-    })->name('map');
+    // Map
+    Route::get('/map', fn() => Inertia::render('Map'))->name('map');
+    Route::get('/map-data', [PropertyController::class, 'map'])->name('map.data');
 
-    // This route is for the messages that are for verified and authenticated users only
-    Route::get('/messages', function () {
-        return Inertia::render('Messages');
-    })->name('messages');
+   // Messaging routes
+    Route::get('/messages', [MessagesController::class, 'index'])->name('messages');
 
-    // This route is for the notifications that are for verified and authenticated users only
-    Route::get('/notifications', function () {
-        return Inertia::render('Notifications');
-    })->name('notifications');
+    Route::get('/messages/{id}', [MessagesController::class, 'show'])->name('messages.show'); // optional detail view
+    Route::get('/messages/property/{property_id}', [MessagesController::class, 'conversation'])->name('messages.conversation');
 
-    // This route is for the notifications that are for verified and authenticated users only
-    Route::get('/upload', function () {
-        return Inertia::render('Upload');
-    })->name('upload');
+    Route::post('/messages', [MessagesController::class, 'store'])->name('messages.store'); // send message
+    Route::post('/start-conversation', [MessagesController::class, 'start'])->name('messages.start'); // initial message
 
-    // This route is for the documentation of the application for verified and authenticated users only 
-    // to know how to use the application
-    Route::get('/documentation', function () {
-        return Inertia::render('Documentation');
-    })->name('documentation');
+    // Notifications
+    Route::get('/notifications', fn() => Inertia::render('Notifications'))->name('notifications');
 
-    // This route is for the video presentation of the application for verified and authenticated users only
-    // to know how to use the application showing its features and functionalities
-    Route::get('/video', function () {
-        return Inertia::render('Video');
-    })->name('video');
+    // Upload
+    Route::get('/upload', fn() => Inertia::render('Upload'))->name('upload');
+
+    // Documentation
+    Route::get('/documentation', fn() => Inertia::render('Documentation'))->name('documentation');
+
+    // Video
+    Route::get('/video', fn() => Inertia::render('Video'))->name('video');
 });

@@ -98,7 +98,7 @@ function handleImageError() {
                                         <h2 class="text-xl font-semibold text-black dark:text-white">Documentation</h2>
 
                                         <p class="mt-4 text-sm/relaxed">
-                                            Laravel has wonderful documentation covering every aspect of the framework. Whether you are a newcomer or have prior experience with Laravel, we recommend reading our documentation from beginning to end.
+                                            This capstone prototype is built using Laravel 12 with Jetstream Inertia, providing a secure and modern full-stack development framework. With its powerful backend and responsive front-end features, the platform ensures smooth navigation, efficient data handling, and a seamless user experience tailored for land listing and inquiries.     
                                         </p>
                                     </div>
                                 </div>
@@ -116,10 +116,10 @@ function handleImageError() {
                             </div>
 
                             <div class="pt-3 sm:pt-5">
-                                <h2 class="text-xl font-semibold text-black dark:text-white">Laracasts</h2>
+                                <h2 class="text-xl font-semibold text-black dark:text-white">LandSeek Video Documentation</h2>
 
                                 <p class="mt-4 text-sm/relaxed">
-                                    Laracasts offers thousands of video tutorials on Laravel, PHP, and JavaScript development. Check them out, see for yourself, and massively level up your development skills in the process.
+                                    View the video documentation of the LandSeek Web Application to be guided accordingly of the functionalities of the web application and be knowledgeable on how to use it.    
                                 </p>
                             </div>
 
@@ -135,10 +135,10 @@ function handleImageError() {
                             </div>
 
                             <div class="pt-3 sm:pt-5">
-                                <h2 class="text-xl font-semibold text-black dark:text-white">Laravel News</h2>
+                                <h2 class="text-xl font-semibold text-black dark:text-white">LandSeek News</h2>
 
                                 <p class="mt-4 text-sm/relaxed">
-                                    Laravel News is a community driven portal and newsletter aggregating all of the latest and most important news in the Laravel ecosystem, including new package releases and tutorials.
+                                    LandSeek is a new digital platform that streamlines the process of finding, listing, and inquiring about land properties. Designed for buyers, owners, agents, and brokers, it offers an efficient way to connect and communicate in real time. With smart listings and user activity tracking, LandSeek makes land transactions more accessible, transparent, and user-friendly.
                                 </p>
                             </div>
 
@@ -160,7 +160,7 @@ function handleImageError() {
                                 <h2 class="text-xl font-semibold text-black dark:text-white">Vibrant Ecosystem</h2>
 
                                 <p class="mt-4 text-sm/relaxed">
-                                    Laravel's robust library of first-party tools and libraries, such as <a href="https://forge.laravel.com" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white dark:focus-visible:ring-[#FF2D20]">Forge</a>, <a href="https://vapor.laravel.com" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Vapor</a>, <a href="https://nova.laravel.com" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Nova</a>, and <a href="https://envoyer.io" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Envoyer</a> help you take your projects to the next level. Pair them with powerful open source libraries like <a href="https://laravel.com/docs/billing" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Cashier</a>, <a href="https://laravel.com/docs/dusk" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Dusk</a>, <a href="https://laravel.com/docs/broadcasting" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Echo</a>, <a href="https://laravel.com/docs/horizon" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Horizon</a>, <a href="https://laravel.com/docs/sanctum" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Sanctum</a>, <a href="https://laravel.com/docs/telescope" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Telescope</a>, and more.
+                                    This capstone prototype is built using Laravel 12 with Jetstream Inertia, creating a secure and modern full-stack foundation for a vibrant ecosystem of land buyers, sellers, agents, and brokers. The platform supports seamless interactions, real-time communication, and efficient property management—fostering an active digital space where users can connect and collaborate with ease.
                                 </p>
                             </div>
                         </div>

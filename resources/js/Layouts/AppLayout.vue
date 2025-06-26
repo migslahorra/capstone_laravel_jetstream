@@ -26,7 +26,7 @@ const logout = () => {
     router.post(route('logout'));
 };
 
-let timeout = 5000; // 5 seconds
+let timeout = 5 * 60 * 60 * 1000; // 5 hours in milliseconds
 let logoutTimer;
 
 function startInactivityTimer() {

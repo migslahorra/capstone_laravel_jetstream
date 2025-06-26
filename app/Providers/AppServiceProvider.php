@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,9 +21,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
         if (app()->environment('local')) {
-        URL::forceScheme('http'); // set into https before using ngrok http 8000 //
+            URL::forceScheme('http'); // change to 'https' for production
         }
-    }
+}
 }
