@@ -3,6 +3,7 @@
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\InquiryController;
+use App\Http\Controllers\SavedPropertyController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -30,8 +31,12 @@ Route::middleware([
     Route::post('/properties', [PropertyController::class, 'store'])->name('properties.store');
     Route::get('/properties/{property}', [PropertyController::class, 'show'])->name('properties.show');
 
+
     // Saved Properties
+    // (import moved to top)
     Route::get('/saved', fn() => Inertia::render('Saved'))->name('saved');
+    Route::post('/saved', [SavedPropertyController::class, 'store'])->name('saved.store');
+    Route::delete('/saved/{property}', [SavedPropertyController::class, 'destroy'])->name('saved.destroy');
 
     // Map
     Route::get('/map', fn() => Inertia::render('Map'))->name('map');

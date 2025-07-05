@@ -13,30 +13,49 @@ class SavedPropertyController extends Controller
     public function index()
     {
         $saved = SavedProperty::with('property')->where('user_id', auth()->id())->get();
-        return Inertia::render('SavedProperties/Index', ['savedProperties' => $saved]);
+        // Only return the related property objects, filter out nulls
+        $properties = $saved->map(function ($sp) {
+            return $sp->property;
+        })->filter()->values();
+        \Log::info('SavedPropertyController@index', ['saved' => $properties->toArray()]);
+        return Inertia::render('Saved', ['savedProperties' => $properties]);
     }
 
     public function store(Request $request)
     {
+        if (!auth()->check()) {
+            \Log::warning('SaveProperty: Not authenticated');
+            abort(403, 'Not authenticated');
+        }
+
         $request->validate([
             'property_id' => 'required|exists:properties,id',
             'notes' => 'nullable|string',
         ]);
 
-        SavedProperty::firstOrCreate([
+        \Log::info('SaveProperty: Saving', [
+            'user_id' => auth()->id(),
+            'property_id' => $request->property_id,
+        ]);
+
+        $saved = SavedProperty::firstOrCreate([
             'user_id' => auth()->id(),
             'property_id' => $request->property_id,
         ], [
             'notes' => $request->notes,
         ]);
 
-        return redirect()->back();
+        \Log::info('SaveProperty: Saved', ['saved' => $saved]);
+
+        return response()->noContent();
     }
 
-    public function destroy(SavedProperty $savedProperty)
+    public function destroy($propertyId)
     {
-        $this->authorize('delete', $savedProperty);
-        $savedProperty->delete();
-        return redirect()->back();
+        $saved = SavedProperty::where('user_id', auth()->id())
+            ->where('property_id', $propertyId)
+            ->firstOrFail();
+        $saved->delete();
+        return response()->noContent();
     }
 }

@@ -53,117 +53,110 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Register" />
-
-    <AuthenticationCard>
-        <template #logo>
-            <AuthenticationCardLogo />
-        </template>
-
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="role" value="Role" />
-                <select
-                    id="role"
-                    v-model="form.role"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200"
-                    required
-                    autofocus
-                >
-                    <option value="" disabled>Select a role</option>
-                    <option value="Buyer">Buyer</option>
-                    <option value="Seller">Seller</option>
-                    <option value="Buyer and Seller">Buyer and Seller</option>
-                    <option value="Agent">Agent</option>
-                    <option value="All Around">All Around</option>
-                </select>
-                <InputError class="mt-2" :message="form.errors.role" />
+  <Head title="Register" />
+  <div class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-green-600 to-green-400">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 mt-8 mb-8">
+      <div class="flex flex-col items-center mb-8">
+        <img src="/image/landseek_logo.jpg" alt="LandSeek Logo" class="h-16 w-16 rounded-full border-2 border-green-700 bg-white shadow mb-2" />
+        <h1 class="text-3xl font-extrabold text-green-700 tracking-tight mb-1">Create your LandSeek Account</h1>
+        <p class="text-gray-500 text-sm">Join the community and start your land journey!</p>
+      </div>
+      <form @submit.prevent="submit" class="space-y-6">
+        <div>
+          <InputLabel for="role" value="Role" />
+          <select
+            id="role"
+            v-model="form.role"
+            class="mt-1 block w-full border border-green-300 rounded-lg shadow-sm focus:ring focus:ring-green-200 focus:border-green-500"
+            required
+            autofocus
+          >
+            <option value="" disabled>Select a role</option>
+            <option value="Buyer">Buyer</option>
+            <option value="Seller">Seller</option>
+            <option value="Buyer and Seller">Buyer and Seller</option>
+            <option value="Agent">Agent</option>
+            <option value="All Around">All Around</option>
+          </select>
+          <InputError class="mt-2" :message="form.errors.role" />
+        </div>
+        <div>
+          <InputLabel for="email" value="Email" />
+          <TextInput
+            id="email"
+            v-model="form.email"
+            type="email"
+            class="mt-1 block w-full border border-green-300 rounded-lg"
+            required
+            autocomplete="username"
+          />
+          <InputError class="mt-2" :message="form.errors.email" />
+        </div>
+        <div class="relative">
+          <InputLabel for="password" value="Password" />
+          <TextInput
+            id="password"
+            v-model="form.password"
+            :type="showPassword ? 'text' : 'password'"
+            class="mt-1 block w-full border border-green-300 rounded-lg pr-20"
+            required
+            autocomplete="new-password"
+          />
+          <button
+            type="button"
+            class="absolute top-9 right-2 text-sm text-green-700 hover:text-green-900"
+            @click="showPassword = !showPassword"
+          >
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </button>
+          <InputError class="mt-2" :message="form.errors.password" />
+          <div v-if="form.password" class="mt-2">
+            <div class="h-2 rounded-full" :class="[strengthColor, 'transition-all']"></div>
+            <p class="text-sm mt-1 text-gray-600">Strength: <strong>{{ passwordStrength }}</strong></p>
+          </div>
+        </div>
+        <div class="relative">
+          <InputLabel for="password_confirmation" value="Confirm Password" />
+          <TextInput
+            id="password_confirmation"
+            v-model="form.password_confirmation"
+            :type="showConfirmPassword ? 'text' : 'password'"
+            class="mt-1 block w-full border border-green-300 rounded-lg pr-20"
+            required
+            autocomplete="new-password"
+          />
+          <button
+            type="button"
+            class="absolute top-9 right-2 text-sm text-green-700 hover:text-green-900"
+            @click="showConfirmPassword = !showConfirmPassword"
+          >
+            {{ showConfirmPassword ? 'Hide' : 'Show' }}
+          </button>
+          <InputError class="mt-2" :message="form.errors.password_confirmation" />
+        </div>
+        <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature">
+          <InputLabel for="terms">
+            <div class="flex items-center">
+              <Checkbox id="terms" v-model:checked="form.terms" name="terms" required />
+              <div class="ms-2">
+                I agree to the
+                <a target="_blank" :href="route('terms.show')" class="underline text-sm text-green-700 hover:text-green-900">Terms of Service</a>
+                and
+                <a target="_blank" :href="route('policy.show')" class="underline text-sm text-green-700 hover:text-green-900">Privacy Policy</a>
+              </div>
             </div>
-
-            <div class="mt-4">
-                <InputLabel for="email" value="Email" />
-                <TextInput
-                    id="email"
-                    v-model="form.email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    required
-                    autocomplete="username"
-                />
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <!-- This is the password field input with strength meter -->
-            <div class="mt-4 relative">
-                <InputLabel for="password" value="Password" />
-                <TextInput
-                    id="password"
-                    v-model="form.password"
-                    :type="showPassword ? 'text' : 'password'"
-                    class="mt-1 block w-full pr-20"
-                    required
-                    autocomplete="new-password"
-                />
-                <button
-                    type="button"
-                    class="absolute top-9 right-2 text-sm text-gray-600 hover:text-gray-900"
-                    @click="showPassword = !showPassword"
-                >
-                    {{ showPassword ? 'Hide' : 'Show' }}
-                </button>
-                <InputError class="mt-2" :message="form.errors.password" />
-
-                <div v-if="form.password" class="mt-2">
-                    <div class="h-2 rounded-full" :class="[strengthColor, 'transition-all']"></div>
-                    <p class="text-sm mt-1 text-gray-600">Strength: <strong>{{ passwordStrength }}</strong></p>
-                </div>
-            </div>
-
-            <!-- Confirm Password -->
-            <div class="mt-4 relative">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
-                <TextInput
-                    id="password_confirmation"
-                    v-model="form.password_confirmation"
-                    :type="showConfirmPassword ? 'text' : 'password'"
-                    class="mt-1 block w-full pr-20"
-                    required
-                    autocomplete="new-password"
-                />
-                <button
-                    type="button"
-                    class="absolute top-9 right-2 text-sm text-gray-600 hover:text-gray-900"
-                    @click="showConfirmPassword = !showConfirmPassword"
-                >
-                    {{ showConfirmPassword ? 'Hide' : 'Show' }}
-                </button>
-                <InputError class="mt-2" :message="form.errors.password_confirmation" />
-            </div>
-
-            <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature" class="mt-4">
-                <InputLabel for="terms">
-                    <div class="flex items-center">
-                        <Checkbox id="terms" v-model:checked="form.terms" name="terms" required />
-                        <div class="ms-2">
-                            I agree to the
-                            <a target="_blank" :href="route('terms.show')" class="underline text-sm text-gray-600 hover:text-gray-900">Terms of Service</a>
-                            and
-                            <a target="_blank" :href="route('policy.show')" class="underline text-sm text-gray-600 hover:text-gray-900">Privacy Policy</a>
-                        </div>
-                    </div>
-                    <InputError class="mt-2" :message="form.errors.terms" />
-                </InputLabel>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    Already registered?
-                </Link>
-
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
-                </PrimaryButton>
-            </div>
-        </form>
-    </AuthenticationCard>
+            <InputError class="mt-2" :message="form.errors.terms" />
+          </InputLabel>
+        </div>
+        <div class="flex items-center justify-between mt-6">
+          <Link :href="route('login')" class="underline text-sm text-green-700 hover:text-green-900">
+            Already registered?
+          </Link>
+          <PrimaryButton class="ml-4 bg-gradient-to-r from-green-600 to-green-400 hover:from-green-700 hover:to-green-500 text-white font-bold px-6 py-2 rounded-lg shadow-lg transition" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            Register
+          </PrimaryButton>
+        </div>
+      </form>
+    </div>
+  </div>
 </template>

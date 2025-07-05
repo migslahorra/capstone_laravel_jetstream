@@ -11,9 +11,14 @@ class PropertyController extends Controller
     public function index()
     {
         $properties = Property::all();
+        $saved = [];
+        if (auth()->check()) {
+            $saved = \App\Models\SavedProperty::where('user_id', auth()->id())->pluck('property_id')->toArray();
+        }
 
         return inertia('Properties', [
             'properties' => $properties,
+            'saved' => $saved,
         ]);
     }
 

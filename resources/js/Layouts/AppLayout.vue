@@ -55,43 +55,43 @@ startInactivityTimer();
 
         <Banner />
 
-        <div class="min-h-screen bg-gray-100">
-            <nav class="bg-white border-b border-gray-100">
+        <div class="min-h-screen bg-gradient-to-br from-green-100 via-white to-blue-100">
+            <nav class="bg-white/90 border-b border-gray-100 shadow-sm">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex justify-between h-16">
-                        <div class="flex">
+                    <div class="flex justify-between h-16 items-center">
+                        <div class="flex items-center gap-4">
                             <!-- Logo -->
-                            <div class="shrink-0 flex items-center">
-                                <Link :href="route('dashboard')">
-                                    <ApplicationMark class="block h-9 w-auto" />
-                                </Link>
-                            </div>
+                            <Link :href="route('dashboard')" class="flex items-center gap-2">
+                                <img src="/resources/image/landseek_logo.jpg" alt="LandSeek Logo" class="w-9 h-9 rounded-full border-2 border-green-400 bg-white shadow" />
+                                <span class="font-extrabold text-lg text-green-700 tracking-tight hidden sm:inline">LandSeek</span>
+                            </Link>
 
                             <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    <i class="fa-solid fa-dashboard" style="margin-right: 5px;"></i>Dashboard
+                            <div class="hidden space-x-2 sm:flex ml-8">
+                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')" class="rounded-lg px-4 py-2 font-semibold transition"
+                                    :class="route().current('dashboard') ? 'bg-green-700 text-white shadow' : 'text-green-700 hover:bg-green-100'">
+                                    <i class="fa-solid fa-dashboard mr-1"></i>Dashboard
                                 </NavLink>
-
-                                <NavLink :href="route('properties')" :active="route().current('properties')">
-                                    <i class="fa-solid fa-location-dot" style="margin-right: 5px;"></i> Properties
+                                <NavLink :href="route('properties')" :active="route().current('properties')" class="rounded-lg px-4 py-2 font-semibold transition"
+                                    :class="route().current('properties') ? 'bg-green-700 text-white shadow' : 'text-green-700 hover:bg-green-100'">
+                                    <i class="fa-solid fa-location-dot mr-1"></i>Properties
                                 </NavLink>
-
-                                <NavLink :href="route('saved')" :active="route().current('saved')">
-                                    <i class="fa-solid fa-bookmark" style="margin-right: 5px;"></i> Saved Properties
+                                <NavLink :href="route('saved')" :active="route().current('saved')" class="rounded-lg px-4 py-2 font-semibold transition"
+                                    :class="route().current('saved') ? 'bg-green-700 text-white shadow' : 'text-green-700 hover:bg-green-100'">
+                                    <i class="fa-solid fa-bookmark mr-1"></i>Saved
                                 </NavLink>
-
-                                <NavLink :href="route('map')" :active="route().current('map')">
-                                    <i class="fa-solid fa-map" style="margin-right: 5px;"></i> Map
+                                <NavLink :href="route('map')" :active="route().current('map')" class="rounded-lg px-4 py-2 font-semibold transition"
+                                    :class="route().current('map') ? 'bg-green-700 text-white shadow' : 'text-green-700 hover:bg-green-100'">
+                                    <i class="fa-solid fa-map mr-1"></i>Map
                                 </NavLink>
-
-                                <NavLink :href="route('messages')" :active="route().current('messages')">
-                                    <i class="fa-solid fa-message" style="margin-right: 5px;"></i> Messages
+                                <NavLink :href="route('messages')" :active="route().current('messages')" class="rounded-lg px-4 py-2 font-semibold transition"
+                                    :class="route().current('messages') ? 'bg-green-700 text-white shadow' : 'text-green-700 hover:bg-green-100'">
+                                    <i class="fa-solid fa-message mr-1"></i>Messages
                                 </NavLink>
-
-                                <NavLink :href="route('notifications')" :active="route().current('notifications')">
-                                    <i class="fa-solid fa-bell" style="margin-right: 5px;"></i> Notifications
+                                <NavLink :href="route('notifications')" :active="route().current('notifications')" class="rounded-lg px-4 py-2 font-semibold transition"
+                                    :class="route().current('notifications') ? 'bg-green-700 text-white shadow' : 'text-green-700 hover:bg-green-100'">
+                                    <i class="fa-solid fa-bell mr-1"></i>Notifications
                                 </NavLink>
                             </div>
                         </div>
