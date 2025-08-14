@@ -4,58 +4,65 @@ namespace App\Http\Controllers;
 
 use App\Models\SavedProperty;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class SavedPropertyController extends Controller
 {
-    use AuthorizesRequests;
     public function index()
     {
-        $saved = SavedProperty::with('property')->where('user_id', auth()->id())->get();
-        // Only return the related property objects, filter out nulls
-        $properties = $saved->map(function ($sp) {
-            return $sp->property;
-        })->filter()->values();
-        \Log::info('SavedPropertyController@index', ['saved' => $properties->toArray()]);
-        return Inertia::render('Saved', ['savedProperties' => $properties]);
+        $savedProperties = SavedProperty::with('property')
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->get()
+            ->map(function ($saved) {
+                return $saved->property;
+            })
+            ->filter()
+            ->values();
+
+        return Inertia::render('Saved', [
+            'savedProperties' => $savedProperties,
+        ]);
     }
 
     public function store(Request $request)
     {
-        if (!auth()->check()) {
-            \Log::warning('SaveProperty: Not authenticated');
-            abort(403, 'Not authenticated');
-        }
-
         $request->validate([
             'property_id' => 'required|exists:properties,id',
-            'notes' => 'nullable|string',
-        ]);
-
-        \Log::info('SaveProperty: Saving', [
-            'user_id' => auth()->id(),
-            'property_id' => $request->property_id,
         ]);
 
         $saved = SavedProperty::firstOrCreate([
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'property_id' => $request->property_id,
-        ], [
-            'notes' => $request->notes,
         ]);
 
-        \Log::info('SaveProperty: Saved', ['saved' => $saved]);
-
-        return response()->noContent();
+        return response()->json([
+            'message' => 'Property saved successfully',
+            'saved' => $saved,
+        ]);
     }
 
     public function destroy($propertyId)
     {
-        $saved = SavedProperty::where('user_id', auth()->id())
+        $saved = SavedProperty::where('user_id', Auth::id())
             ->where('property_id', $propertyId)
-            ->firstOrFail();
-        $saved->delete();
-        return response()->noContent();
+            ->first();
+
+        if ($saved) {
+            $saved->delete();
+        }
+
+        // ✅ Inertia expects a redirect or Inertia response, not plain JSON
+        return redirect()->back()->with('success', 'Saved property removed');
+    }
+
+    public function ids()
+    {
+        $ids = SavedProperty::where('user_id', Auth::id())->pluck('property_id');
+
+        return response()->json([
+            'savedIds' => $ids,
+        ]);
     }
 }

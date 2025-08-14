@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\MessagesController;
-use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\SavedPropertyController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +16,7 @@ Route::get('/', function () {
     ]);
 });
 
+// Protected Routes
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -24,42 +24,42 @@ Route::middleware([
 ])->group(function () {
 
     // Dashboard
-    Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
+    Route::get('/dashboard', fn () => Inertia::render('Dashboard'))->name('dashboard');
 
     // Properties
     Route::get('/properties', [PropertyController::class, 'index'])->name('properties');
     Route::post('/properties', [PropertyController::class, 'store'])->name('properties.store');
     Route::get('/properties/{property}', [PropertyController::class, 'show'])->name('properties.show');
 
-
-    // Saved Properties
-    // (import moved to top)
-    Route::get('/saved', fn() => Inertia::render('Saved'))->name('saved');
-    Route::post('/saved', [SavedPropertyController::class, 'store'])->name('saved.store');
-    Route::delete('/saved/{property}', [SavedPropertyController::class, 'destroy'])->name('saved.destroy');
-
     // Map
-    Route::get('/map', fn() => Inertia::render('Map'))->name('map');
+    Route::get('/map', fn () => Inertia::render('Map'))->name('map');
     Route::get('/map-data', [PropertyController::class, 'map'])->name('map.data');
 
-   // Messaging routes
+    // Upload
+    Route::get('/upload', fn () => Inertia::render('Upload'))->name('upload');
+
+    // Saved Properties
+    Route::get('/saved', [SavedPropertyController::class, 'index'])->name('saved'); // 👈 Fix: match "route('saved')" in Vue
+    Route::post('/saved', [SavedPropertyController::class, 'store'])->name('saved.store');
+    Route::delete('/saved/{propertyId}', [SavedPropertyController::class, 'destroy'])->name('saved.destroy');
+    Route::get('/saved-ids', [SavedPropertyController::class, 'ids'])->name('saved.ids');
+
+    // Optional: separate view for SavedProperties page
+    Route::get('/saved-properties', fn () => Inertia::render('SavedProperties'))->name('saved.properties');
+
+    // Messages
     Route::get('/messages', [MessagesController::class, 'index'])->name('messages');
-
-    Route::get('/messages/{id}', [MessagesController::class, 'show'])->name('messages.show'); // optional detail view
+    Route::get('/messages/{id}', [MessagesController::class, 'show'])->name('messages.show');
     Route::get('/messages/property/{property_id}', [MessagesController::class, 'conversation'])->name('messages.conversation');
-
-    Route::post('/messages', [MessagesController::class, 'store'])->name('messages.store'); // send message
-    Route::post('/start-conversation', [MessagesController::class, 'start'])->name('messages.start'); // initial message
+    Route::post('/messages', [MessagesController::class, 'store'])->name('messages.store');
+    Route::post('/start-conversation', [MessagesController::class, 'start'])->name('messages.start');
 
     // Notifications
-    Route::get('/notifications', fn() => Inertia::render('Notifications'))->name('notifications');
-
-    // Upload
-    Route::get('/upload', fn() => Inertia::render('Upload'))->name('upload');
+    Route::get('/notifications', fn () => Inertia::render('Notifications'))->name('notifications');
 
     // Documentation
-    Route::get('/documentation', fn() => Inertia::render('Documentation'))->name('documentation');
+    Route::get('/documentation', fn () => Inertia::render('Documentation'))->name('documentation');
 
     // Video
-    Route::get('/video', fn() => Inertia::render('Video'))->name('video');
+    Route::get('/video', fn () => Inertia::render('Video'))->name('video');
 });

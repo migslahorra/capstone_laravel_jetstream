@@ -38,7 +38,7 @@ const submit = () => {
   <div class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-green-100 via-white to-blue-100 py-8 px-2">
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border-t-4 border-green-400">
       <div class="flex flex-col items-center mb-6">
-        <img src="/resources/image/landseek_logo.jpg" alt="LandSeek Logo" class="w-16 h-16 rounded-full shadow border-2 border-green-400 mb-2 bg-white" />
+        <img src="/images/landseek_logo.png" alt="LandSeek Logo" class="w-16 h-16 rounded-full shadow border-2 border-green-400 mb-2 bg-white" />
         <h2 class="text-2xl font-bold text-green-700 tracking-tight">Welcome back to LandSeek</h2>
         <p class="text-gray-500 text-sm mt-1">Sign in to your account</p>
       </div>

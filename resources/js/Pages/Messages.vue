@@ -10,37 +10,58 @@ const authUser = page.props.auth.user;
 
 <template>
   <AppLayout title="Messages">
+    <!-- Header -->
     <template #header>
-      <div class="flex items-center gap-3 py-2">
-        <svg class="w-7 h-7 text-green-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 4.418-4.03 8-9 8s-9-3.582-9-8a9 9 0 1118 0z"/><circle cx="12" cy="12" r="3"/></svg>
+      <div class="flex items-center gap-3 py-5 px-4 bg-gradient-to-r from-green-50 via-white to-blue-50 rounded-t-2xl shadow-sm border-b border-gray-200">
+        <div class="bg-green-600 p-2 rounded-full shadow">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 4.418-4.03 8-9 8s-9-3.582-9-8a9 9 0 1118 0z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </div>
         <h2 class="font-extrabold text-2xl text-green-700 tracking-tight">Inbox</h2>
       </div>
     </template>
 
-    <div class="p-6 bg-gradient-to-br from-green-100 via-white to-blue-100 min-h-[60vh] rounded-xl shadow">
-      <div v-if="messages.length === 0" class="flex flex-col items-center justify-center py-16">
-        <svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 4.418-4.03 8-9 8s-9-3.582-9-8a9 9 0 1118 0z"/><circle cx="12" cy="12" r="3"/></svg>
-        <p class="text-gray-500 text-lg">No conversations yet.</p>
-      </div>
+    <!-- Main Content -->
+    <div class="py-10 px-4 bg-gradient-to-br from-green-50 via-white to-blue-50 min-h-screen">
+      <div class="max-w-4xl mx-auto">
+        
+        <!-- Empty State -->
+        <div v-if="messages.length === 0" class="flex flex-col items-center justify-center py-16 bg-white rounded-2xl shadow-lg border border-green-200">
+          <svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 4.418-4.03 8-9 8s-9-3.582-9-8a9 9 0 1118 0z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          <p class="text-gray-500 text-lg">No conversations yet.</p>
+        </div>
 
-      <ul v-else class="space-y-4">
-        <li
-          v-for="msg in messages"
-          :key="msg.id"
-          class="p-5 bg-white rounded-xl shadow flex flex-col md:flex-row md:items-center md:justify-between border-t-4 border-green-200 hover:border-green-400 transition"
-        >
-          <div class="mb-2 md:mb-0">
-            <div class="text-sm text-gray-500 mb-1"><span class="font-semibold text-green-700">Property:</span> {{ msg.property?.title ?? 'N/A' }}</div>
-            <div class="text-sm text-gray-500"><span class="font-semibold text-green-700">With:</span> {{ msg.sender_id === authUser.id ? msg.receiver?.email : msg.sender?.email }}</div>
-          </div>
-          <a
-            :href="`/messages/property/${msg.property_id}`"
-            class="inline-block mt-2 md:mt-0 px-5 py-2 bg-green-600 text-white rounded-lg font-semibold shadow hover:bg-green-700 transition"
+        <!-- Conversations List -->
+        <ul v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <li
+            v-for="msg in messages"
+            :key="msg.id"
+            class="bg-white rounded-2xl shadow-lg border border-green-100 p-5 hover:shadow-xl hover:scale-[1.02] transition transform flex flex-col justify-between"
           >
-            View Conversation
-          </a>
-        </li>
-      </ul>
+            <div class="mb-4">
+              <div class="text-sm text-gray-500 mb-2">
+                <span class="font-semibold text-green-700">Property:</span> {{ msg.property?.title ?? 'N/A' }}
+              </div>
+              <div class="text-sm text-gray-500">
+                <span class="font-semibold text-green-700">With:</span>
+                {{ msg.sender_id === authUser.id ? msg.receiver?.email : msg.sender?.email }}
+              </div>
+            </div>
+            <a
+              :href="`/messages/property/${msg.property_id}`"
+              class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold shadow transition text-center"
+            >
+              View Conversation
+            </a>
+          </li>
+        </ul>
+
+      </div>
     </div>
   </AppLayout>
 </template>

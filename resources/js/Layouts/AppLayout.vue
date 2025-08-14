@@ -63,7 +63,7 @@ startInactivityTimer();
                         <div class="flex items-center gap-4">
                             <!-- Logo -->
                             <Link :href="route('dashboard')" class="flex items-center gap-2">
-                                <img src="/resources/image/landseek_logo.jpg" alt="LandSeek Logo" class="w-9 h-9 rounded-full border-2 border-green-400 bg-white shadow" />
+                                <img src="/images/landseek_logo.png" alt="LandSeek Logo" class="w-9 h-9 rounded-full border-2 border-green-400 bg-white shadow" />
                                 <span class="font-extrabold text-lg text-green-700 tracking-tight hidden sm:inline">LandSeek</span>
                             </Link>
 

@@ -31,4 +31,20 @@ class Property extends Model
     protected $casts = [
         'images' => 'array',
     ];
+
+    /**
+     * Relationship: This property may be saved by many users.
+     */
+    public function savedByUsers()
+    {
+        return $this->hasMany(SavedProperty::class);
+    }
+
+    /**
+     * Relationship: Owner of the property
+     */
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
